@@ -6,9 +6,9 @@ The inspiration to build this was from https://dribbble.com/shots/17418648-Meddl
 
 
 ## Homepage
-![Screenshot](flutter/assets/readme/doc1.png)
+![Screenshot](assets/readme/doc1.png)
 
 
 ## Make appointments
-![Screenshot](flutter/assets/readme/doc2.png)
+![Screenshot](assets/readme/doc2.png)
 
