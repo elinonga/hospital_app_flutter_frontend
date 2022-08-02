@@ -1,6 +1,4 @@
-# flutter & django hospital_app
-- The Frontend is made with flutter
-- The Backend is made with Django
+# hospital_app_flutter_frontend
 
 The inspiration to build this was from https://dribbble.com/shots/17418648-Meddler-Clinic-Mobile-App/attachments/12546816?mode=media
 
