@@ -4,9 +4,9 @@ The inspiration to build this was from https://dribbble.com/shots/17418648-Meddl
 
 
 ## Homepage
-![Screenshot](assets/readme/doc1.png)
+![Screenshot](assets/readme/doc3.png)
 
 
 ## Make appointments
-![Screenshot](assets/readme/doc2.png)
+![Screenshot](assets/readme/doc4.png)
 
