@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:medical_app/main_screen.dart';
-import 'package:medical_app/pages/auth/register.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,7 +18,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.teal,
       ),
       // home: const MainScreen(),
-      home: const RegistrationPage(),
+      home: const MainScreen(),
     );
   }
 }
