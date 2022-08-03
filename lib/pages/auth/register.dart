@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medical_app/pages/auth/login.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({Key? key}) : super(key: key);
@@ -19,7 +20,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Registration"),
+        title: const Text("Registration"),
+        automaticallyImplyLeading: false,
       ),
       body: ListView(children: [
         // 🎊
@@ -102,16 +104,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
           height: 20,
         ),
 
-        // Have account?
-        TextButton(
-          onPressed: () {
-            // Redirect to Login page
-          },
-          child: const Text(
-            'Have an account?',
-          ),
-        ),
-
         // Register Button
         Container(
             height: 50,
@@ -126,6 +118,27 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 print(passwordController.text);
               },
             )),
+
+        // Has an account?
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            const Text('Already have account?'),
+            TextButton(
+              child: const Text(
+                'Sign In',
+                style: TextStyle(fontSize: 17),
+              ),
+              onPressed: () {
+                //sign in screen
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginPage()),
+                );
+              },
+            )
+          ],
+        ),
 
         // 🎊
       ]),
