@@ -48,11 +48,11 @@ class AuthServices {
   }
 
   // Logout
-  // static Future<http.Response> logout() async {
-  //   var url = Uri.parse("http://127.0.0.1:8000/api/auth/logout/");
-  //   http.Response response =
-  //       await http.post(url, headers: {"Content-Type": "application/json"});
-  //   print(response.body);
-  //   return response;
-  // }
+  static Future<http.Response> logout() async {
+    var url = Uri.parse("http://127.0.0.1:8000/api/auth/logout/");
+    http.Response response =
+        await http.post(url, headers: {"Content-Type": "application/json"});
+    print(response.body);
+    return response;
+  }
 }

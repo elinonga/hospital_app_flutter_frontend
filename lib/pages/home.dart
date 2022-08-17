@@ -18,14 +18,14 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   // Logout button pressed
-  // logoutPressed() async {
-  //   await AuthServices.logout();
-  //   Navigator.push(
-  //       context,
-  //       MaterialPageRoute(
-  //         builder: (BuildContext context) => const LoginPage(),
-  //       ));
-  // }
+  logoutPressed() async {
+    await AuthServices.logout();
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (BuildContext context) => const LoginPage(),
+        ));
+  }
 
   @override
   Widget build(BuildContext context) {
