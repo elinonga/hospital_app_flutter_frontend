@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:medical_app/pages/home.dart';
 import 'package:medical_app/services/auth_service.dart';
 import 'package:medical_app/pages/widgets/auth/button.dart';
+import 'package:medical_app/services/globals.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({Key? key}) : super(key: key);
@@ -16,14 +17,40 @@ class RegistrationPage extends StatefulWidget {
 }
 
 class _RegistrationPageState extends State<RegistrationPage> {
-
-  String firstName = '';
-  String lastName = '';
+  String first_name = '';
+  String last_name = '';
   String username = '';
   String email = '';
-  String password = '';
-  String confirmPassword = '';
-  
+  String password1 = '';
+  String password2 = '';
+
+  // Method to create account
+  createAccount() async {
+    bool emailValid = RegExp(
+            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+        .hasMatch(email);
+    if (emailValid) {
+      // create account
+      http.Response response = await AuthServices.register(
+          first_name, last_name, email, password1, password2, username);
+
+      Map responseMap = jsonDecode(response.body);
+
+      if (response.statusCode == 200) {
+        // if account created successfully
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (BuildContext context) => const HomePage(),
+            ));
+      } else {
+        // if account not created successfully
+        errorSnackBar(context, responseMap.values.first[0]);
+      }
+    } else {
+      errorSnackBar(context, 'email not valid');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,10 +68,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
           child: TextField(
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
-              labelText: 'User Name',
+              labelText: 'Username',
             ),
             onChanged: (value) {
-                username = value;
+              username = value;
             },
           ),
         ),
@@ -58,7 +85,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
               labelText: 'First Name',
             ),
             onChanged: (value) {
-                firstName = value;
+              first_name = value;
             },
           ),
         ),
@@ -72,7 +99,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
               labelText: 'Last Name',
             ),
             onChanged: (value) {
-                lastName = value;
+              last_name = value;
             },
           ),
         ),
@@ -86,7 +113,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
               labelText: 'Email',
             ),
             onChanged: (value) {
-                email = value;
+              email = value;
             },
           ),
         ),
@@ -101,7 +128,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
               labelText: 'Password',
             ),
             onChanged: (value) {
-                password = value;
+              password1 = value;
             },
           ),
         ),
@@ -116,7 +143,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
               labelText: 'Confirm Password',
             ),
             onChanged: (value) {
-                confirmPassword = value;
+              password2 = value;
             },
           ),
         ),
@@ -156,110 +183,4 @@ class _RegistrationPageState extends State<RegistrationPage> {
       ]),
     );
   }
-
-
-  // Method to create account
-  createAccount() async {
-    if (password != confirmPassword) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Passwords do not match'),
-            content: const Text('Please confirm your password'),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('OK'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
-      );
-    } else {  
-      // if passwords match create account
-      bool emailValid = RegExp(
-            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-        .hasMatch(email);
-      if (emailValid) {
-        // create account
-        http.Response response =
-          await AuthServices.register(firstName, lastName, email, 
-          password, confirmPassword, username);
-
-        if (response.statusCode == 200) {
-          // if account created successfully
-          final Map<String, dynamic> responseData = json.decode(response.body);
-          if (responseData['success']) {
-            // if account created successfully
-            // ignore: use_build_context_synchronously
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (BuildContext context) => const HomePage(),
-              ));
-          } else {
-            // if account not created successfully
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: const Text('Account not created'),
-                  content: Text(responseData['message']),
-                  actions: <Widget>[
-                    TextButton(
-                      child: const Text('OK'),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ],
-                );
-              },
-            );
-          }
-        } else {
-          // if account not created successfully
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text('Account not created'),
-                content: const Text('Please try again'),
-                actions: <Widget>[
-                  TextButton(
-                    child: const Text('OK'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              );
-            },
-          );
-        }
-      } else {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('Invalid Email'),
-              content: const Text('Please enter a valid email'),
-              actions: <Widget>[
-                TextButton(
-                  child: const Text('OK'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          },
-        );
-      }
-    }
-  }
-
 }
