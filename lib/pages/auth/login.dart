@@ -1,5 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:medical_app/pages/auth/register.dart';
+
+import 'package:http/http.dart' as http;
+import 'package:medical_app/pages/home.dart';
+import 'package:medical_app/pages/widgets/auth/button.dart';
+import 'package:medical_app/services/auth_service.dart';
+import 'package:medical_app/services/globals.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -9,8 +17,26 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  String _username = '';
+  String _password = '';
+
+  loginPressed() async {
+    if (_username.isNotEmpty && _password.isNotEmpty) {
+      http.Response response = await AuthServices.login(_username, _password);
+      Map responseMap = jsonDecode(response.body);
+      if (response.statusCode == 200) {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (BuildContext context) => const HomePage(),
+            ));
+      } else {
+        errorSnackBar(context, responseMap.values.first);
+      }
+    } else {
+      errorSnackBar(context, 'enter all required fields');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,15 +46,17 @@ class _LoginPageState extends State<LoginPage> {
       body: ListView(children: [
         // 🎊
 
-        // Email
+        // Username
         Container(
           padding: const EdgeInsets.all(10),
           child: TextField(
-            controller: emailController,
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
-              labelText: 'Email',
+              labelText: 'Username',
             ),
+            onChanged: (value) {
+              _username = value;
+            },
           ),
         ),
 
@@ -37,11 +65,13 @@ class _LoginPageState extends State<LoginPage> {
           padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
           child: TextField(
             obscureText: true,
-            controller: passwordController,
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
               labelText: 'Password',
             ),
+            onChanged: (value) {
+              _password = value;
+            },
           ),
         ),
 
@@ -59,17 +89,11 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
 
-        // Register Button
-        Container(
-            height: 50,
-            padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-            child: ElevatedButton(
-              child: const Text('Login'),
-              onPressed: () {
-                print(emailController.text);
-                print(passwordController.text);
-              },
-            )),
+        // Login Button
+        LoginRegButton(
+          btnText: 'Sign In',
+          onBtnPressed: () => loginPressed(),
+        ),
 
         // Does not have an account?
         Row(

@@ -37,14 +37,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
       Map responseMap = jsonDecode(response.body);
 
       if (response.statusCode == 200) {
-        // if account created successfully
         Navigator.push(
             context,
             MaterialPageRoute(
               builder: (BuildContext context) => const HomePage(),
             ));
       } else {
-        // if account not created successfully
         errorSnackBar(context, responseMap.values.first[0]);
       }
     } else {
@@ -154,7 +152,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
         // Register Button
         LoginRegButton(
-          btnText: 'Create Account',
+          btnText: 'Register',
           onBtnPressed: () => createAccount(),
         ),
 

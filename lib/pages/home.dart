@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:medical_app/pages/auth/login.dart';
 import 'package:medical_app/pages/widgets/home/appointment.dart';
 import 'package:medical_app/pages/widgets/home/clinic_info.dart';
 import 'package:medical_app/pages/widgets/home/headers.dart';
 import 'package:medical_app/pages/widgets/home/search.dart';
 import 'package:medical_app/pages/widgets/home/small_container.dart';
 import 'package:medical_app/pages/widgets/home/topbar.dart';
+import 'package:medical_app/services/auth_service.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -15,6 +17,16 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  // Logout button pressed
+  // logoutPressed() async {
+  //   await AuthServices.logout();
+  //   Navigator.push(
+  //       context,
+  //       MaterialPageRoute(
+  //         builder: (BuildContext context) => const LoginPage(),
+  //       ));
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
