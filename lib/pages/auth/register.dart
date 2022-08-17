@@ -16,12 +16,6 @@ class RegistrationPage extends StatefulWidget {
 }
 
 class _RegistrationPageState extends State<RegistrationPage> {
-  TextEditingController usernameController = TextEditingController();
-  TextEditingController firstNameController = TextEditingController();
-  TextEditingController lastNameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController confirmPasswordController = TextEditingController();
 
   String firstName = '';
   String lastName = '';
@@ -45,7 +39,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
         Container(
           padding: const EdgeInsets.all(10),
           child: TextField(
-            controller: usernameController,
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
               labelText: 'User Name',
@@ -60,7 +53,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
         Container(
           padding: const EdgeInsets.all(10),
           child: TextField(
-            controller: firstNameController,
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
               labelText: 'First Name',
@@ -75,7 +67,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
         Container(
           padding: const EdgeInsets.all(10),
           child: TextField(
-            controller: lastNameController,
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
               labelText: 'Last Name',
@@ -90,7 +81,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
         Container(
           padding: const EdgeInsets.all(10),
           child: TextField(
-            controller: emailController,
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
               labelText: 'Email',
@@ -106,7 +96,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
           padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
           child: TextField(
             obscureText: true,
-            controller: passwordController,
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
               labelText: 'Password',
@@ -122,7 +111,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
           padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
           child: TextField(
             obscureText: true,
-            controller: confirmPasswordController,
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
               labelText: 'Confirm Password',
