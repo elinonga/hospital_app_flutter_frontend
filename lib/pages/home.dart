@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:medical_app/pages/auth/login.dart';
+import 'package:medical_app/pages/widgets/drawer.dart';
 import 'package:medical_app/pages/widgets/home/appointment.dart';
 import 'package:medical_app/pages/widgets/home/clinic_info.dart';
 import 'package:medical_app/pages/widgets/home/headers.dart';
@@ -30,6 +31,18 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
+        iconTheme: IconThemeData(color: Colors.black),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.exit_to_app, color: Colors.black,),
+            onPressed: logoutPressed,
+          ),
+        ],
+      ),
+      drawer: MainDrawer(),
       backgroundColor: HexColor("f3f8fb"),
       body: ListView(children: [
         // Row (Salamu + Notification + Avatar)
