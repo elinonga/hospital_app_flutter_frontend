@@ -6,6 +6,17 @@ class TopBar extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
+  // {
+  //   "access_token":"eyJ0eXAiKdzY9fe4EObMyWWl8",
+  //    "user":{
+  //       "pk":1,
+  //       "username":"mezza",
+  //       "email":"dkmezza@gmail.com",
+  //       "first_name":"",
+  //       "last_name":""
+  //     }
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Container(
