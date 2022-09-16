@@ -11,21 +11,32 @@ import 'package:medical_app/pages/widgets/home/topbar.dart';
 import 'package:medical_app/services/auth_service.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  final String accesstoken;
+  const HomePage({Key? key, required this.accesstoken}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  //instance of ApiClient class
+  final AuthServices _apiClient = AuthServices();
+
   // Logout button pressed
-  logoutPressed() async {
-    await AuthServices.logout();
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (BuildContext context) => const LoginPage(),
-        ));
+  // logoutPressed() async {
+  //   await AuthServices.logout();
+  //   Navigator.push(
+  //       context,
+  //       MaterialPageRoute(
+  //         builder: (BuildContext context) => const LoginPage(),
+  //       ));
+  // }
+
+  // get user data from AuthServices
+  Future<Map<String, dynamic>> getUserData() async {
+    dynamic userRes;
+    userRes = await _apiClient.getUserProfileData(widget.accesstoken);
+    return userRes;
   }
 
   @override
@@ -37,8 +48,14 @@ class _HomePageState extends State<HomePage> {
         iconTheme: IconThemeData(color: Colors.black),
         actions: [
           IconButton(
-            icon: Icon(Icons.exit_to_app, color: Colors.black,),
-            onPressed: logoutPressed,
+            icon: Icon(
+              Icons.exit_to_app,
+              color: Colors.black,
+            ),
+            //onPressed: logoutPressed,
+            onPressed: () {
+              print("Logout!");
+            },
           ),
         ],
       ),

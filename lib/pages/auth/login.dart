@@ -20,15 +20,18 @@ class _LoginPageState extends State<LoginPage> {
   String _username = '';
   String _password = '';
 
-  loginPressed() async {
+  Future<void> loginPressed() async {
     if (_username.isNotEmpty && _password.isNotEmpty) {
       http.Response response = await AuthServices.login(_username, _password);
       Map responseMap = jsonDecode(response.body);
       if (response.statusCode == 200) {
+        // Get access token and pass it to the home page
+        String accessToken = responseMap['access_token'];
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (BuildContext context) => const HomePage(),
+              builder: (BuildContext context) =>
+                  HomePage(accesstoken: accessToken),
             ));
       } else {
         errorSnackBar(context, responseMap.values.first);
