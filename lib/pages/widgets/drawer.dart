@@ -55,17 +55,17 @@ class _MainDrawerState extends State<MainDrawer> {
             ),
           ),
 
-          ListTile(
-            leading: Icon(Icons.home),
-            title: Text("Home", style: TextStyle(
-              fontSize: 18,
-            ),),
-            onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => HomePage(),
-                  ));
-            },
-          ),
+          // ListTile(
+          //   leading: Icon(Icons.home),
+          //   title: Text("Home", style: TextStyle(
+          //     fontSize: 18,
+          //   ),),
+          //   onTap: () {
+          //     Navigator.push(context,
+          //         MaterialPageRoute(builder: (context) => HomePage(),
+          //         ));
+          //   },
+          // ),
 
           ListTile(
             leading: Icon(Icons.cloud_download),

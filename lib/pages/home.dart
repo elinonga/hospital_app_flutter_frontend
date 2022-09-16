@@ -19,18 +19,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
   //instance of ApiClient class
   final AuthServices _apiClient = AuthServices();
-
-  // Logout button pressed
-  // logoutPressed() async {
-  //   await AuthServices.logout();
-  //   Navigator.push(
-  //       context,
-  //       MaterialPageRoute(
-  //         builder: (BuildContext context) => const LoginPage(),
-  //       ));
-  // }
 
   // get user data from AuthServices
   Future<Map<String, dynamic>> getUserData() async {
@@ -53,7 +44,13 @@ class _HomePageState extends State<HomePage> {
               color: Colors.black,
             ),
             //onPressed: logoutPressed,
-            onPressed: () {
+            onPressed: () async {
+              await _apiClient.logout(widget.accesstoken);
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => const LoginPage(),
+                  ));
               print("Logout!");
             },
           ),

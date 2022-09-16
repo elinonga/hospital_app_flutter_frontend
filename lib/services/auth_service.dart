@@ -50,8 +50,8 @@ class AuthServices {
     return response;
   }
 
+  // GET USER PROFILE DATA
   Future<http.Response> getUserProfileData(String accesstoken) async {
-    //GET USER PROFILE DATA
     try {
       Response response = await _dio.get(
         'http://127.0.0.1:8000/api/auth/user/',
@@ -71,17 +71,18 @@ class AuthServices {
     }
   }
 
+
+  // IMPLEMENT USER LOGOUT
   Future<Response> logout(String accessToken) async {
-    //IMPLEMENT USER LOGOUT
     try {
       Response response = await _dio.get(
         'http://127.0.0.1:8000/api/auth/logout/',
         queryParameters: {
+          // 'api_key': 'ApiSecret.apiKey',
           'access_token': accessToken,
         },
         options: Options(
           headers: {
-            'Content-Type': 'application/json',
             'Authorization': 'Bearer $accessToken'
           },
         ),

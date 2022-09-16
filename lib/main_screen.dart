@@ -26,7 +26,7 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    homePage = const HomePage();
+    // homePage = HomePage(accesstoken: accesstoken);
     appointmentPage = const AppointmentPage();
     favorite = const Favorite();
     messagePage = const MessagePage();
