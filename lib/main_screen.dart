@@ -12,6 +12,8 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  late final String accesstoken;
+
   int currentTabIndex = 0;
   late List<Widget> pages;
   late Widget currentPage;
@@ -26,7 +28,9 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    // homePage = HomePage(accesstoken: accesstoken);
+    homePage = HomePage(
+      accesstoken: accesstoken,
+    );
     appointmentPage = const AppointmentPage();
     favorite = const Favorite();
     messagePage = const MessagePage();

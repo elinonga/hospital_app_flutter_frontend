@@ -1,21 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:medical_app/services/auth_service.dart';
 
-class TopBar extends StatelessWidget {
+class TopBar extends StatefulWidget {
+  final String accesstoken;
   const TopBar({
     Key? key,
+    required this.accesstoken,
   }) : super(key: key);
 
-  // {
-  //   "access_token":"eyJ0eXAiKdzY9fe4EObMyWWl8",
-  //    "user":{
-  //       "pk":1,
-  //       "username":"mezza",
-  //       "email":"dkmezza@gmail.com",
-  //       "first_name":"",
-  //       "last_name":""
-  //     }
-  // }
+  @override
+  State<TopBar> createState() => _TopBarState();
+}
+
+class _TopBarState extends State<TopBar> {
+  //instance of ApiClient class
+  final AuthServices _apiClient = AuthServices();
+
+  // get user data from AuthServices
+  Future<Map<String, dynamic>> getUserData() async {
+    dynamic response = await _apiClient.getUserProfileData(widget.accesstoken);
+    return response;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,14 +31,39 @@ class TopBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           //Column
-          Column(crossAxisAlignment: CrossAxisAlignment.start, children: const [
+          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text("Hello"),
-            Text(
-              "Mr Elinonga 👋",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 17,
-              ),
+
+            // User data
+            FutureBuilder<Map<String, dynamic>>(
+              future: getUserData(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  // get results from snapshot
+                  String username = snapshot.data!['username'];
+                  print(username);
+                  return Column(
+                    children: [
+                      Text(
+                        "Mr, $username 👋",
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 17,
+                        ),
+                      ),
+                    ],
+                  );
+                } else if (snapshot.hasError) {
+                  return Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Text("${snapshot.error}"),
+                  );
+                } else {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              },
             ),
           ]),
 

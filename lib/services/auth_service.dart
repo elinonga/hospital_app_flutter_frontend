@@ -1,9 +1,17 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthServices {
   final Dio _dio = Dio();
+
+  // get Token with Shared Preferences
+  Future<String> getToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('token');
+    return token!;
+  }
 
   // Registration
   Future<dynamic> register(

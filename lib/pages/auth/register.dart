@@ -8,6 +8,7 @@ import 'package:medical_app/pages/home.dart';
 import 'package:medical_app/services/auth_service.dart';
 import 'package:medical_app/pages/widgets/auth/button.dart';
 import 'package:medical_app/services/globals.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({Key? key}) : super(key: key);
@@ -50,6 +51,11 @@ class _RegistrationPageState extends State<RegistrationPage> {
       if (response['ErrorCode'] == null) {
         // Get access token and pass it to the home page
         String accessToken = response['access_token'];
+
+        SharedPreferences localStorage = await SharedPreferences.getInstance();
+        localStorage.setString('token', accessToken);
+        localStorage.setString('user', jsonEncode(response['user']));
+
         Navigator.push(
             context,
             MaterialPageRoute(
