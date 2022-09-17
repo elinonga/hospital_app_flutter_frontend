@@ -17,24 +17,39 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  bool isLoading = false;
+
   String _username = '';
   String _password = '';
 
+  final AuthServices _apiClient = AuthServices();
+
   Future<void> loginPressed() async {
+    setState(() {
+      isLoading = true;
+    });
     if (_username.isNotEmpty && _password.isNotEmpty) {
-      http.Response response = await AuthServices.login(_username, _password);
-      Map responseMap = jsonDecode(response.body);
-      if (response.statusCode == 200) {
+      dynamic response = await _apiClient.login(_username, _password);
+      // Map responseMap = jsonDecode(response.body);
+
+      if (response['ErrorCode'] == null) {
         // Get access token and pass it to the home page
-        String accessToken = responseMap['access_token'];
+        String accessToken = response['access_token'];
         Navigator.push(
             context,
             MaterialPageRoute(
               builder: (BuildContext context) =>
                   HomePage(accesstoken: accessToken),
             ));
-      } else {
-        errorSnackBar(context, responseMap.values.first);
+      } // error code 401
+      else if (response['ErrorCode'] == 401) {
+        errorSnackBar(context, 'Wrong username or password');
+      } // error code 400
+      else if (response['ErrorCode'] == 400) {
+        errorSnackBar(context, 'Bad request');
+      } // error code 500
+      else if (response['ErrorCode'] == 500) {
+        errorSnackBar(context, 'Internal server error');
       }
     } else {
       errorSnackBar(context, 'enter all required fields');
@@ -46,82 +61,84 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       appBar: AppBar(
           title: const Text("Login Page"), automaticallyImplyLeading: false),
-      body: ListView(children: [
-        // 🎊
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : ListView(children: [
+              // 🎊
 
-        // Username
-        Container(
-          padding: const EdgeInsets.all(10),
-          child: TextField(
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Username',
-            ),
-            onChanged: (value) {
-              _username = value;
-            },
-          ),
-        ),
-
-        // Password
-        Container(
-          padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-          child: TextField(
-            obscureText: true,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Password',
-            ),
-            onChanged: (value) {
-              _password = value;
-            },
-          ),
-        ),
-
-        const SizedBox(
-          height: 20,
-        ),
-
-        // Forgot Password
-        TextButton(
-          onPressed: () {
-            //forgot password screen
-          },
-          child: const Text(
-            'Forgot Password',
-          ),
-        ),
-
-        // Login Button
-        LoginRegButton(
-          btnText: 'Sign In',
-          onBtnPressed: () => loginPressed(),
-        ),
-
-        // Does not have an account?
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('Does not have account?'),
-            TextButton(
-              child: const Text(
-                'Sign Up',
-                style: TextStyle(fontSize: 17),
+              // Username
+              Container(
+                padding: const EdgeInsets.all(10),
+                child: TextField(
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Username',
+                  ),
+                  onChanged: (value) {
+                    _username = value;
+                  },
+                ),
               ),
-              onPressed: () {
-                //signup screen
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const RegistrationPage()),
-                );
-              },
-            )
-          ],
-        ),
 
-        // 🎊
-      ]),
+              // Password
+              Container(
+                padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                child: TextField(
+                  obscureText: true,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Password',
+                  ),
+                  onChanged: (value) {
+                    _password = value;
+                  },
+                ),
+              ),
+
+              const SizedBox(
+                height: 20,
+              ),
+
+              // Forgot Password
+              TextButton(
+                onPressed: () {
+                  //forgot password screen
+                },
+                child: const Text(
+                  'Forgot Password',
+                ),
+              ),
+
+              // Login Button
+              LoginRegButton(
+                btnText: 'Sign In',
+                onBtnPressed: () => loginPressed(),
+              ),
+
+              // Does not have an account?
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  const Text('Does not have account?'),
+                  TextButton(
+                    child: const Text(
+                      'Sign Up',
+                      style: TextStyle(fontSize: 17),
+                    ),
+                    onPressed: () {
+                      //signup screen
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const RegistrationPage()),
+                      );
+                    },
+                  )
+                ],
+              ),
+
+              // 🎊
+            ]),
     );
   }
 }

@@ -19,15 +19,20 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   //instance of ApiClient class
   final AuthServices _apiClient = AuthServices();
 
   // get user data from AuthServices
   Future<Map<String, dynamic>> getUserData() async {
-    dynamic userRes;
-    userRes = await _apiClient.getUserProfileData(widget.accesstoken);
-    return userRes;
+    dynamic response = await _apiClient.getUserProfileData(widget.accesstoken);
+    return response;
+  }
+
+  // Logout
+  Future<void> logout() async {
+    await _apiClient.logout(widget.accesstoken);
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => const LoginPage()));
   }
 
   @override
@@ -62,6 +67,38 @@ class _HomePageState extends State<HomePage> {
         // Row (Salamu + Notification + Avatar)
         const TopBar(),
         const SizedBox(height: 30),
+
+        // User data
+        FutureBuilder<Map<String, dynamic>>(
+          future: getUserData(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              // get results from snapshot
+              String username = snapshot.data!['username'];
+              print(username);
+              return Column(
+                children: [
+                  Text(
+                    "Hello, $username 👋",
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 17,
+                    ),
+                  ),
+                ],
+              );
+            } else if (snapshot.hasError) {
+              return Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Text("${snapshot.error}"),
+              );
+            } else {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+          },
+        ),
 
         // Search bar
         const SearchBar(),

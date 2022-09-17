@@ -6,7 +6,7 @@ class AuthServices {
   final Dio _dio = Dio();
 
   // Registration
-  static Future<http.Response> register(
+  Future<dynamic> register(
     String first_name,
     String last_name,
     String email,
@@ -23,35 +23,49 @@ class AuthServices {
       'username': username,
     };
 
-    var body = json.encode(data);
-    var url = Uri.parse("http://127.0.0.1:8000/registration/");
-
-    http.Response response = await http.post(url,
-        headers: {"Content-Type": "application/json"}, body: body);
-
-    print(response.body);
-    return response;
+    try {
+      Response response = await _dio.post(
+        'http://127.0.0.1:8000/registration/',
+        data: data,
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
+      return response.data;
+    } on DioError catch (e) {
+      return e.response!.data;
+    }
   }
 
   // Login
-  static Future<http.Response> login(String username, String password) async {
-    Map data = {
-      'username': username,
-      'password': password,
-    };
+  Future<dynamic> login(String username, String password) async {
+    var auth = 'Basic ' + base64Encode(utf8.encode('$username:$password'));
 
-    var body = json.encode(data);
-    var url = Uri.parse("http://127.0.0.1:8000/api/auth/login/");
-
-    http.Response response = await http.post(url,
-        headers: {"Content-Type": "application/json"}, body: body);
-
-    print(response.body);
-    return response;
+    try {
+      Response response = await _dio.post(
+        'http://127.0.0.1:8000/api/auth/login/',
+        data: {
+          'username': username,
+          'password': password,
+        },
+        options: Options(
+          headers: {
+            'Authorization': auth,
+          },
+        ),
+      );
+      return response.data;
+    } on DioError catch (e) {
+      print(e.response!.data);
+      print(e.response!.statusCode);
+      return e.response!.data;
+    }
   }
 
   // GET USER PROFILE DATA
-  Future<http.Response> getUserProfileData(String accesstoken) async {
+  Future<dynamic> getUserProfileData(String accesstoken) async {
     try {
       Response response = await _dio.get(
         'http://127.0.0.1:8000/api/auth/user/',
@@ -60,7 +74,6 @@ class AuthServices {
         },
         options: Options(
           headers: {
-            'Content-Type': 'application/json',
             'Authorization': 'Bearer $accesstoken',
           },
         ),
@@ -71,9 +84,8 @@ class AuthServices {
     }
   }
 
-
   // IMPLEMENT USER LOGOUT
-  Future<Response> logout(String accessToken) async {
+  Future<dynamic> logout(String accessToken) async {
     try {
       Response response = await _dio.get(
         'http://127.0.0.1:8000/api/auth/logout/',
@@ -82,9 +94,7 @@ class AuthServices {
           'access_token': accessToken,
         },
         options: Options(
-          headers: {
-            'Authorization': 'Bearer $accessToken'
-          },
+          headers: {'Authorization': 'Bearer $accessToken'},
         ),
       );
       return response.data;
@@ -92,13 +102,4 @@ class AuthServices {
       return e.response!.data;
     }
   }
-
-  // Logout
-  // static Future<http.Response> logout() async {
-  //   var url = Uri.parse("http://127.0.0.1:8000/api/auth/logout/");
-  //   http.Response response =
-  //       await http.post(url, headers: {"Content-Type": "application/json"});
-  //   print(response.body);
-  //   return response;
-  // }
 }
