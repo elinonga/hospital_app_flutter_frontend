@@ -16,8 +16,13 @@ class _MyProfileState extends State<MyProfile> {
   // instance of ApiClient class
   final AuthServices _apiClient = AuthServices();
 
+  bool isLoading = false;
+
   // get user data from AuthServices
   Future<Map<String, dynamic>> getUserData() async {
+    setState(() {
+      isLoading = true;
+    });
     dynamic response = await _apiClient.getUserProfileData(widget.accesstoken);
     return response;
   }
@@ -49,14 +54,15 @@ class _MyProfileState extends State<MyProfile> {
               ),
             ),
 
-            // User data
-            FutureBuilder<Map<String, dynamic>>(
+            // User data with circular progress indicator
+
+            isLoading ? const Center(child: CircularProgressIndicator())
+            : FutureBuilder<Map<String, dynamic>>(
               future: getUserData(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
 
                   // get results from snapshot
-                  String username = snapshot.data!['username'];
                   String fname = snapshot.data!['first_name'];
                   String lname = snapshot.data!['last_name'];
                   String email = snapshot.data!['email'];
@@ -70,27 +76,6 @@ class _MyProfileState extends State<MyProfile> {
                   
                   return Column(
                     children: [
-                      // User name
-                      Container(
-                        margin: const EdgeInsets.only(bottom: 15),
-                        child: Row(
-                          children: [
-                            Text(
-                              "Username: ",
-                              style: TextStyle(
-                                fontSize: 17,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              "$username",
-                              style: TextStyle(
-                                fontSize: 17,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
 
                       // First name
                       Container(

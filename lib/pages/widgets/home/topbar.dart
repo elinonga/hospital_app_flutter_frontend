@@ -14,11 +14,17 @@ class TopBar extends StatefulWidget {
 }
 
 class _TopBarState extends State<TopBar> {
+
+  bool isLoading = false;
+
   //instance of ApiClient class
   final AuthServices _apiClient = AuthServices();
 
   // get user data from AuthServices
   Future<Map<String, dynamic>> getUserData() async {
+    setState(() {
+      isLoading = true;
+    });
     dynamic response = await _apiClient.getUserProfileData(widget.accesstoken);
     return response;
   }
@@ -32,20 +38,22 @@ class _TopBarState extends State<TopBar> {
         children: [
           //Column
           Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text("Hello"),
+            const Text("Hello,"),
 
             // User data
-            FutureBuilder<Map<String, dynamic>>(
+            isLoading ? const Center(child: CircularProgressIndicator())
+            : FutureBuilder<Map<String, dynamic>>(
               future: getUserData(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   // get results from snapshot
-                  String username = snapshot.data!['username'];
-                  print(username);
+                  String fname = snapshot.data!['first_name'];
+                  String lname = snapshot.data!['last_name'];
+                  
                   return Column(
                     children: [
                       Text(
-                        "Mr, $username 👋",
+                        "$fname $lname 👋",
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 17,

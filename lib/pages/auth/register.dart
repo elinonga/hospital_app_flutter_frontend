@@ -22,9 +22,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
   bool isLoading = false;
 
-  String first_name = '';
-  String last_name = '';
-  String username = '';
+  String fname = '';
+  String lname = '';
   String email = '';
   String password1 = '';
   String password2 = '';
@@ -40,12 +39,11 @@ class _RegistrationPageState extends State<RegistrationPage> {
     if (emailValid) {
       // create account
       dynamic response = await _apiClient.register(
-        first_name,
-        last_name,
+        fname,
+        lname,
         email,
         password1,
         password2,
-        username,
       );
 
       if (response['ErrorCode'] == null) {
@@ -82,20 +80,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
           : ListView(children: [
               // 🎊
 
-              // Username
-              Container(
-                padding: const EdgeInsets.all(10),
-                child: TextField(
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Username',
-                  ),
-                  onChanged: (value) {
-                    username = value;
-                  },
-                ),
-              ),
-
               // First Name
               Container(
                 padding: const EdgeInsets.all(10),
@@ -105,7 +89,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     labelText: 'First Name',
                   ),
                   onChanged: (value) {
-                    first_name = value;
+                    fname = value;
                   },
                 ),
               ),
@@ -119,7 +103,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     labelText: 'Last Name',
                   ),
                   onChanged: (value) {
-                    last_name = value;
+                    lname = value;
                   },
                 ),
               ),

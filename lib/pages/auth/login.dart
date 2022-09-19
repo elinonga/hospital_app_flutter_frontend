@@ -20,7 +20,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   bool isLoading = false;
 
-  String _username = '';
+  String _email = '';
   String _password = '';
 
   final AuthServices _apiClient = AuthServices();
@@ -29,8 +29,8 @@ class _LoginPageState extends State<LoginPage> {
     setState(() {
       isLoading = true;
     });
-    if (_username.isNotEmpty && _password.isNotEmpty) {
-      dynamic response = await _apiClient.login(_username, _password);
+    if (_email.isNotEmpty && _password.isNotEmpty) {
+      dynamic response = await _apiClient.login(_email, _password);
       // Map responseMap = jsonDecode(response.body);
 
       if (response['ErrorCode'] == null) {
@@ -49,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
             ));
       } // error code 401
       else if (response['ErrorCode'] == 401) {
-        errorSnackBar(context, 'Wrong username or password');
+        errorSnackBar(context, 'Wrong email or password');
       } // error code 400
       else if (response['ErrorCode'] == 400) {
         errorSnackBar(context, 'Bad request');
@@ -72,16 +72,16 @@ class _LoginPageState extends State<LoginPage> {
           : ListView(children: [
               // 🎊
 
-              // Username
+              // Email
               Container(
                 padding: const EdgeInsets.all(10),
                 child: TextField(
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'Username',
+                    labelText: 'Email',
                   ),
                   onChanged: (value) {
-                    _username = value;
+                    _email = value;
                   },
                 ),
               ),

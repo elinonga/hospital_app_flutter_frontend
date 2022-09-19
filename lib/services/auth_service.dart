@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthServices {
@@ -15,25 +14,23 @@ class AuthServices {
 
   // Registration
   Future<dynamic> register(
-    String first_name,
-    String last_name,
+    String fname,
+    String lname,
     String email,
     String password1,
     String password2,
-    String username,
   ) async {
     Map data = {
-      'first_name': first_name,
-      'last_name': last_name,
+      'first_name': fname,
+      'last_name': lname,
       'email': email,
       'password1': password1,
       'password2': password2,
-      'username': username,
     };
 
     try {
       Response response = await _dio.post(
-        'http://127.0.0.1:8000/registration/',
+        'http://127.0.0.1:8000/api/v1/auth/register/',
         data: data,
         options: Options(
           headers: {
@@ -48,14 +45,14 @@ class AuthServices {
   }
 
   // Login
-  Future<dynamic> login(String username, String password) async {
-    var auth = 'Basic ' + base64Encode(utf8.encode('$username:$password'));
+  Future<dynamic> login(String email, String password) async {
+    var auth = 'Basic ' + base64Encode(utf8.encode('$email:$password'));
 
     try {
       Response response = await _dio.post(
-        'http://127.0.0.1:8000/api/auth/login/',
+        'http://127.0.0.1:8000/api/v1/auth/login/',
         data: {
-          'username': username,
+          'email': email,
           'password': password,
         },
         options: Options(
@@ -76,7 +73,7 @@ class AuthServices {
   Future<dynamic> getUserProfileData(String accesstoken) async {
     try {
       Response response = await _dio.get(
-        'http://127.0.0.1:8000/api/auth/user/',
+        'http://127.0.0.1:8000/api/v1/auth/user/',
         queryParameters: {
           'access_token': accesstoken,
         },
@@ -96,7 +93,7 @@ class AuthServices {
   Future<dynamic> logout(String accessToken) async {
     try {
       Response response = await _dio.get(
-        'http://127.0.0.1:8000/api/auth/logout/',
+        'http://127.0.0.1:8000/api/v1/auth/logout/',
         queryParameters: {
           // 'api_key': 'ApiSecret.apiKey',
           'access_token': accessToken,
