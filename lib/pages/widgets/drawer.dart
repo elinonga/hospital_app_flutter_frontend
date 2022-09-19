@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:medical_app/pages/appointment.dart';
+import 'package:medical_app/pages/auth/login.dart';
 import 'package:medical_app/pages/favorite.dart';
 import 'package:medical_app/pages/home.dart';
 import 'package:medical_app/pages/message.dart';
@@ -122,6 +123,20 @@ class _MainDrawerState extends State<MainDrawer> {
                         builder: (context) => AppointmentPage(),
                       ),
                     );
+                  },
+                ),
+
+                // Logout
+                ListTile(
+                  leading: Icon(Icons.logout),
+                  title: Text('Logout'),
+                  onTap: () async {
+                    await _apiClient.logout(widget.accesstoken);
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (BuildContext context) => const LoginPage(),
+                    ));
                   },
                 ),
               ],
