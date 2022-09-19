@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:medical_app/pages/auth/login.dart';
+import 'package:medical_app/pages/widgets/appbar.dart';
 import 'package:medical_app/pages/widgets/drawer.dart';
 import 'package:medical_app/pages/widgets/home/appointment.dart';
 import 'package:medical_app/pages/widgets/home/clinic_info.dart';
@@ -19,35 +20,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  //instance of ApiClient class
-  final AuthServices _apiClient = AuthServices();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
-        iconTheme: IconThemeData(color: Colors.black),
-        actions: [
-          IconButton(
-            icon: Icon(
-              Icons.exit_to_app,
-              color: Colors.black,
-            ),
-            //onPressed: logoutPressed,
-            onPressed: () async {
-              await _apiClient.logout(widget.accesstoken);
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => const LoginPage(),
-                  ));
-              print("Logout!");
-            },
-          ),
-        ],
-      ),
+      appBar: const AppBarDesign(title: "Home",),
       drawer: MainDrawer(accesstoken: widget.accesstoken,),
       backgroundColor: HexColor("f3f8fb"),
       body: ListView(children: [

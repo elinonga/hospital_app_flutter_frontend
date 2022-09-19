@@ -5,14 +5,14 @@ import 'package:medical_app/pages/home.dart';
 import 'package:medical_app/pages/message.dart';
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({Key? key}) : super(key: key);
+  final String accesstoken;
+  const MainScreen({Key? key, required this.accesstoken}) : super(key: key);
 
   @override
   State<MainScreen> createState() => _MainScreenState();
 }
 
 class _MainScreenState extends State<MainScreen> {
-  late final String accesstoken;
 
   int currentTabIndex = 0;
   late List<Widget> pages;
@@ -28,12 +28,10 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    homePage = HomePage(
-      accesstoken: accesstoken,
-    );
-    appointmentPage = const AppointmentPage();
-    favorite = const Favorite();
-    messagePage = const MessagePage();
+    homePage = HomePage(accesstoken: widget.accesstoken);
+    appointmentPage = AppointmentPage(accesstoken: widget.accesstoken);
+    favorite = Favorite(accesstoken: widget.accesstoken);
+    messagePage = MessagePage(accesstoken: widget.accesstoken);
 
     pages = [homePage, appointmentPage, favorite, messagePage];
 

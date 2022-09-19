@@ -96,7 +96,7 @@ class _MainDrawerState extends State<MainDrawer> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => Favorite(),
+                        builder: (context) => Favorite(accesstoken: widget.accesstoken,),
                       ),
                     );
                   },
@@ -108,7 +108,7 @@ class _MainDrawerState extends State<MainDrawer> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => MessagePage(),
+                        builder: (context) => MessagePage(accesstoken: widget.accesstoken,),
                       ),
                     );
                   },
@@ -120,7 +120,7 @@ class _MainDrawerState extends State<MainDrawer> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => AppointmentPage(),
+                        builder: (context) => AppointmentPage(accesstoken: widget.accesstoken,),
                       ),
                     );
                   },
