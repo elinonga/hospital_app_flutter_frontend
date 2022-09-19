@@ -48,7 +48,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      drawer: MainDrawer(),
+      drawer: MainDrawer(accesstoken: widget.accesstoken,),
       backgroundColor: HexColor("f3f8fb"),
       body: ListView(children: [
         // Row (Salamu + Notification + Avatar)
