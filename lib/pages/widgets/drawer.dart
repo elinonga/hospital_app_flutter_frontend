@@ -4,6 +4,7 @@ import 'package:medical_app/pages/auth/login.dart';
 import 'package:medical_app/pages/favorite.dart';
 import 'package:medical_app/pages/home.dart';
 import 'package:medical_app/pages/message.dart';
+import 'package:medical_app/pages/profile.dart';
 import 'package:medical_app/services/auth_service.dart';
 
 class MainDrawer extends StatefulWidget {
@@ -126,7 +127,19 @@ class _MainDrawerState extends State<MainDrawer> {
                   },
                 ),
 
-                // Logout
+                ListTile(
+                  leading: Icon(Icons.person),
+                  title: Text('My Profile'),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MyProfile(accesstoken: widget.accesstoken,),
+                      ),
+                    );
+                  },
+                ),
+
                 ListTile(
                   leading: Icon(Icons.logout),
                   title: Text('Logout'),
@@ -139,6 +152,8 @@ class _MainDrawerState extends State<MainDrawer> {
                     ));
                   },
                 ),
+
+                
               ],
             );
           } else if (snapshot.hasError) {
